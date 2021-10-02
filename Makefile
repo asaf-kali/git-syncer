@@ -8,6 +8,7 @@ lint:
 	black . -l 120
 
 build:
+	gio trash -f dist/
 	python -m build
 
 upload:

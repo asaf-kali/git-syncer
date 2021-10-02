@@ -17,6 +17,8 @@ def initialize_syncer():
     log.info(f"Environment directory: {wrap(env_dir)}")
     log.info(f"Project working directory: {wrap(working_dir)}")
     log.info(f"User home directory: {wrap(home_dir)}")
+    if env_dir is None:
+        raise RuntimeError("init-syncer must be run only after venv is activated!")
     # Logs
     logs_dir = os.path.join(home_dir, "logs", "git-syncer")
     execute_shell(f"mkdir {logs_dir} -p")

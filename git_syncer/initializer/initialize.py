@@ -31,7 +31,7 @@ def initialize_syncer():
 def _render_templates(context: dict, out_dir: str):
     execute_shell(f"mkdir {out_dir} -p")
     templates_dir = _get_templates_path()
-    env = Environment(loader=FileSystemLoader(templates_dir))
+    env = Environment(loader=FileSystemLoader(templates_dir), keep_trailing_newline=True)
     _render_crontab(context=context, env=env, out_dir=out_dir)
     _render_runner(context=context, env=env, out_dir=out_dir)
 
@@ -52,7 +52,6 @@ def _render_crontab(context: dict, env: Environment, out_dir: str):
     crontab_out_file = os.path.join(out_dir, "crontab.txt")
     env.get_template("crontab.txt").stream(**context).dump(crontab_out_file)
     execute_shell(f"crontab {crontab_out_file}")
-
 
 # if __name__ == "__main__":
 #     initialize_syncer()

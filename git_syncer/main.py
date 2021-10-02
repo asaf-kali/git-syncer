@@ -3,7 +3,7 @@ import os
 from argparse import ArgumentParser, Namespace
 
 from git_syncer.jobs.run_boot import run_boot
-from git_syncer.jobs.run_crons import run_crons, add_cron_jobs, CRON_JOBS
+from git_syncer.jobs.run_crons import run_crons, CRON_JOBS
 from git_syncer.sync.job import SyncJob
 from git_syncer.utils.logger import configure_logging
 

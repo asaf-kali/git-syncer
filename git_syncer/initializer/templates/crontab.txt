@@ -24,9 +24,7 @@
 
 # This crontab is managed by git_syncer
 
-@reboot   {{root_dir}}/crons/reboot.sh    >>{{home}}/logs/git_syncer/boot.log      2>&1
-* * * * * {{root_dir}}/crons/run_crons.sh >>{{home}}/logs/git_syncer/run_crons.log 2>&1
+@reboot   {{out_dir}}/runner.sh --boot >>{{logs_dir}}/boot.log  2>&1
+* * * * * {{out_dir}}/runner.sh        >>{{logs_dir}}/crons.log 2>&1
 
-# 0 7 * * * /home/pi/projects/rsbpi-git_syncer/crons/security-updates.sh >>/home/pi/logs/crontab-update.log 2>&1
 # 0 7 * * * del /home/pi/logs/rsbpi-git_syncer/crontab.log
-# * * * * * /home/pi/projects/rsbpi-git_syncer/sync.sh >>/home/pi/logs/rsbpi-git_syncer/crontab.log 2>&1

@@ -10,6 +10,7 @@ BOOT_JOBS: List[BootJob] = []
 
 
 def run_boot():
+    log.info("Running boot jobs.")
     for job in BOOT_JOBS:
         log.debug(f"Running job {wrap(job.name)}")
         try:

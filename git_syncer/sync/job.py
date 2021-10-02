@@ -70,6 +70,7 @@ class SyncJob(CronJob):
         return inputs
 
     def _run_commands(self, inputs: Set[str]) -> bool:
+        log.info("Looking for remote commands.")
         executed = False
         for command in COMMANDS:
             if command.should_execute(inputs=inputs):

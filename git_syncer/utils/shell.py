@@ -17,7 +17,7 @@ def execute_shell(
     if args:
         full_command += " " + " ".join(args)
     if print_command:
-        log.debug(f"Running command: '{full_command}'")
+        log.debug(f"Executing shell: '{full_command}'")
     p = subprocess.Popen(args=full_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     if print_output:
         for line in p.stdout.readlines():

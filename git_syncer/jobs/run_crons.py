@@ -12,6 +12,7 @@ CRON_JOBS: List[CronJob] = []
 
 
 def run_crons():
+    log.info("Running cron jobs.")
     for job in CRON_JOBS:
         if pycron.is_now(job.expression):
             log.debug(f"Running cron {wrap(job.name)}")

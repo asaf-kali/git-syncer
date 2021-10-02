@@ -2,4 +2,4 @@
 
 source "{{env_dir}}/bin/activate"
 cd "{{working_dir}}"
-python "{{working_dir}}/main.py"
+python "{{working_dir}}/main.py" "$@"

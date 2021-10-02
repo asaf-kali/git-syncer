@@ -15,7 +15,10 @@ def run_crons():
     for job in CRON_JOBS:
         if pycron.is_now(job.expression):
             log.debug(f"Running cron {wrap(job.name)}")
-            job.run()
+            try:
+                job.run()
+            except:
+                log.exception("Job execution failed")
 
 
 def add_cron_jobs(*jobs: CronJob):

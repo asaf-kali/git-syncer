@@ -81,7 +81,11 @@ class SyncJob(CronJob):
         log.debug(f"Running command {wrap(command.verbose_name)}.")
         original_command_file_name = os.path.join(self.commands_dir, command.formal_name)
         result_file_name = original_command_file_name + "-result.txt"
-        result = command.execute()
+        try:
+            result = command.execute()
+        except Exception as e:
+            log.exception("Command execution failed")
+            result = str(e)
         with open(result_file_name, "w") as result_file:
             log.info(f"Writing result: {result}")
             result_file.write(result)

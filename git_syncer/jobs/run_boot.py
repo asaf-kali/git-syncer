@@ -12,7 +12,10 @@ BOOT_JOBS: List[BootJob] = []
 def run_boot():
     for job in BOOT_JOBS:
         log.debug(f"Running job {wrap(job.name)}")
-        job.run()
+        try:
+            job.run()
+        except:
+            log.exception("Job execution failed")
 
 
 def add_boot_jobs(*jobs: BootJob):

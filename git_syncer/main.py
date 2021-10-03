@@ -5,14 +5,12 @@ from argparse import ArgumentParser, Namespace
 from git_syncer.jobs.run_boot import run_boot
 from git_syncer.jobs.run_crons import run_crons, CRON_JOBS
 from git_syncer.sync.job import SyncJob
-from git_syncer.utils.logger import configure_logging
 
 log = logging.getLogger(__name__)
 
 
 def run():
     log.debug("git-syncer start.")
-    configure_logging()
     args = _parse_args()
     _add_sync_job()
     _run(is_boot=args.boot)

@@ -52,6 +52,3 @@ def _render_crontab(context: dict, env: Environment, out_dir: str):
     crontab_out_file = os.path.join(out_dir, "crontab.txt")
     env.get_template("crontab.txt").stream(**context).dump(crontab_out_file)
     execute_shell(f"crontab {crontab_out_file}")
-
-# if __name__ == "__main__":
-#     initialize_syncer()

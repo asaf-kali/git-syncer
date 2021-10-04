@@ -1,8 +1,8 @@
 import logging
 from typing import List
 
-from git_syncer.jobs.models import BootJob
-from git_syncer.utils.logger import wrap
+from .models import BootJob
+from ..utils.logger import wrap
 
 log = logging.getLogger(__name__)
 
@@ -10,12 +10,12 @@ BOOT_JOBS: List[BootJob] = []
 
 
 def run_boot():
-    log.info("Running boot jobs.")
+    log.info(f"Running {wrap(len(BOOT_JOBS))} boot jobs.")
     for job in BOOT_JOBS:
         log.debug(f"Running job {wrap(job.name)}")
         try:
             job.run()
-        except:
+        except:  # noqa
             log.exception("Job execution failed")
 
 

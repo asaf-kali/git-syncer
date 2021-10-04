@@ -1,15 +1,30 @@
 import logging
 import os
+from argparse import ArgumentParser, Namespace
 
 from jinja2 import Environment, FileSystemLoader
 
-from git_syncer.utils import execute_shell
-from git_syncer.utils.logger import wrap
+from ..utils import execute_shell, yes_or_no
+from ..utils.logger import wrap
 
 log = logging.getLogger(__name__)
 
 
 def initialize_syncer():
+    log.debug("Init syncer start.")
+    args = _parse_args()
+    if args.no_input:
+        log.debug("No input is on.")
+    else:
+        proceed = yes_or_no("Initialize will override your current crontab settings")
+        if not proceed:
+            log.info("Aborting initialize process.")
+            return
+    _initialize()
+    log.debug("Init syncer done.")
+
+
+def _initialize():
     # Get directories
     env_dir = os.getenv("VIRTUAL_ENV")
     working_dir = os.getcwd()
@@ -26,6 +41,14 @@ def initialize_syncer():
     out_dir = os.path.join(working_dir, "out")
     context = {"working_dir": working_dir, "env_dir": env_dir, "logs_dir": logs_dir, "out_dir": out_dir}
     _render_templates(context, out_dir)
+
+
+def _parse_args() -> Namespace:
+    parser = ArgumentParser()
+    parser.add_argument("--no-input", default=False, action="store_true")
+    args = parser.parse_args()
+    log.debug(f"Args: {args}")
+    return args
 
 
 def _render_templates(context: dict, out_dir: str):

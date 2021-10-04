@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="git-syncer",
-    version="0.0.18",
+    version="0.1.0",
     description="Allows cron job control and command execution on a remote machine using git infrastructure",
     author="Asaf Kali",
     author_email="unknown@gmail.com",
@@ -11,6 +11,7 @@ setup(
     entry_points={
         "console_scripts": [
             "init-syncer = git_syncer.initializer:initialize_syncer",
+            # "run-syncer = git_syncer:run",
         ]
     },
     include_package_data=True,

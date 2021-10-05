@@ -11,10 +11,11 @@ On your computer, set up the basic repository:
 1. [Create](https://github.com/new) a private GitHub repository and clone it.
 2. Create a `requirements.txt` file, and add the `git-syncer` dependency.
 3. Create a `main.py` file:
+
 ```python3
 from git_syncer import run
 from git_syncer.jobs import add_cron_jobs, add_boot_jobs
-from git_syncer.sync import add_commands
+from git_syncer.executor import add_commands
 
 add_boot_jobs()  # Add boot jobs here ⛷️ 
 add_cron_jobs()  # Add cron jobs here 🚵🏻‍♀️
@@ -34,8 +35,9 @@ On your remote machine (SSH to it):
 If you choose to do so, check the `Allow write access` checkbox. 
 7. Clone your new repository to the remote machine.
 8. Set up [virtual environment](https://docs.python.org/library/venv.html) for this project and activate it (using `source <venv_dir>/bin/activate`).
-9. Install dependencies using `pip install -r requirements.txt` (`git-syncer` should be installed).
-10. ⚠️ **THIS STEP WILL OVERRIDE YOUR EXISTING CRONTAB SETTINGS!** ⚠️<br>
+9. `cd` to your repository directory.
+10. Install dependencies using `pip install -r requirements.txt` (`git-syncer` should be installed).
+11. ⚠️ **THIS STEP WILL OVERRIDE YOUR EXISTING CRONTAB SETTINGS!** ⚠️<br>
 Activate the syncer using the CLI command `init-syncer`.
 
 From now on, you can add new [cron jobs](#cron-jobs) and run [remote commands](#remote-commands) on the machine using this git repository.

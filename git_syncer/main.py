@@ -12,7 +12,7 @@ from .utils import execute_shell
 log = logging.getLogger(__name__)
 
 
-class Command(Enum):
+class Mode(Enum):
     BOOT = "boot"
     CRONS = "crons"
 
@@ -24,32 +24,32 @@ class Command(Enum):
 def run():
     log.debug("Git syncer start.")
     args = _parse_args()
-    _run(command=args.command, sync=args.sync)
+    _run(mode=args.mode, sync=args.sync)
     log.debug("Git syncer done.")
 
 
-def _run(command: Command, sync: bool):
+def _run(mode: Mode, sync: bool):
     if sync:
         log.debug("Sync is on, pulling from git.")
         _run_sync()
-        log.debug("Running same command with --no-sync flag.")
-        execute_shell(f"out/runner.sh {command.value} --no-sync")
+        log.debug("Running same mode with --no-sync flag.")
+        execute_shell(f"out/runner.sh {mode.value} --no-sync")
         return
     _add_execute_job()
-    if command == Command.BOOT:
+    if mode == Mode.BOOT:
         run_boot()
-    elif command == Command.CRONS:
+    elif mode == Mode.CRONS:
         run_crons()
     else:
-        raise NotImplementedError(f"Unexpected command {command}")
+        raise NotImplementedError(f"Unexpected mode {mode}")
 
 
 def _parse_args() -> Namespace:
     parser = ArgumentParser()
-    parser.add_argument("command_name", choices=Command.value_list())
+    parser.add_argument("mode_name", choices=Mode.value_list())
     parser.add_argument("--no-sync", default=False, action="store_true")
     args = parser.parse_args()
-    args.command = Command[args.command_name.upper()]
+    args.mode = Mode[args.mode_name.upper()]
     args.sync = not args.no_sync
     log.debug(f"Args: {args}")
     return args

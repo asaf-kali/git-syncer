@@ -9,6 +9,7 @@ from ..utils.logger import wrap
 
 log = logging.getLogger(__name__)
 
+COMMANDS_DIR = "commands"
 COMMANDS: List[Command] = []
 
 
@@ -33,7 +34,7 @@ class ExecutorJob(BootJob, CronJob):
 
     @property
     def commands_dir(self) -> str:
-        return f"{self.base_dir}/commands"
+        return os.path.join(self.base_dir, COMMANDS_DIR)
 
     @property
     def has_executed(self) -> bool:

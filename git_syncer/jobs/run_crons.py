@@ -23,7 +23,7 @@ def _get_jobs_to_run() -> List[CronJob]:
     for job in CRON_JOBS:
         if pycron.is_now(job.expression):
             jobs_to_run.append(job)
-            log.debug(f"Cron {wrap(job.name)} will run.")
+            log.debug(f"Cron {wrap(job.verbose_name)} will run.")
     return jobs_to_run
 
 
@@ -32,10 +32,10 @@ def _run_jobs(jobs_to_run: List[CronJob]):
     # TODO: Maybe run async in parallel?
     for job in jobs_to_run:
         try:
-            log.debug(f"Running cron {wrap(job.name)}")
+            log.debug(f"Running cron {wrap(job.verbose_name)}")
             job.run()
         except:  # noqa
-            log.exception(f"Job {wrap(job.name)} execution failed")
+            log.exception(f"Job {wrap(job.verbose_name)} execution failed")
 
 
 def add_cron_jobs(*jobs: CronJob):

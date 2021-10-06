@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 class Job:
     @property
-    def name(self) -> str:
+    def verbose_name(self) -> str:
         raise NotImplementedError()
 
     def run(self):

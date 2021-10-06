@@ -11,6 +11,10 @@ LOGGING_CONFIG = {
         "simple": {
             "format": "%(message)s",
         },
+        "verbose": {
+            "format": "[%(asctime)s.%(msecs)03d] [%(levelname)-.3s]: %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
         "debug": {
             "format": "[%(asctime)s.%(msecs)03d] [%(levelname)-.4s]: %(message)s @@@ "
             "[%(threadName)s] [%(name)s:%(lineno)s]",
@@ -30,13 +34,13 @@ LOGGING_CONFIG = {
         "console_out": {
             "class": "git_syncer.utils.logging.StreamHandler",
             "filters": ["std_filter"],
-            "formatter": "debug",
+            "formatter": "verbose",
             "stream": sys.stdout,
         },
         "console_err": {
             "class": "git_syncer.utils.logging.StreamHandler",
             "filters": ["err_filter"],
-            "formatter": "debug",
+            "formatter": "verbose",
             "stream": sys.stderr,
         },
     },

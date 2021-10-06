@@ -1,5 +1,5 @@
 import logging
-from typing import List
+from typing import List, Iterable
 
 import pycron
 
@@ -12,14 +12,29 @@ CRON_JOBS: List[CronJob] = []
 
 
 def run_crons():
+    jobs_to_run = _get_jobs_to_run()
+    # First checking and then running because things might take longer then 1 minute.
+    _run_jobs(jobs_to_run)
+
+
+def _get_jobs_to_run() -> Iterable[CronJob]:
     log.info(f"Checking {wrap(len(CRON_JOBS))} cron jobs.")
+    jobs_to_run = []
     for job in CRON_JOBS:
         if pycron.is_now(job.expression):
+            jobs_to_run.append(job)
+            log.debug(f"Cron {wrap(job.name)} will run.")
+    return jobs_to_run
+
+
+def _run_jobs(jobs_to_run: Iterable[CronJob]):
+    # TODO: Maybe run async in parallel?
+    for job in jobs_to_run:
+        try:
             log.debug(f"Running cron {wrap(job.name)}")
-            try:
-                job.run()
-            except:  # noqa
-                log.exception("Job execution failed")
+            job.run()
+        except:  # noqa
+            log.exception(f"Job {wrap(job.name)} execution failed")
 
 
 def add_cron_jobs(*jobs: CronJob):

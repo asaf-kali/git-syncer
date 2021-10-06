@@ -12,7 +12,7 @@ BOOT_JOBS: List[BootJob] = []
 def run_boot():
     log.info(f"Running {wrap(len(BOOT_JOBS))} boot jobs.")
     for job in BOOT_JOBS:
-        log.debug(f"Running job {wrap(job.name)}")
+        log.debug(f"Running job {wrap(job.verbose_name)}")
         try:
             job.run()
         except:  # noqa

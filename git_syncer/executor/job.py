@@ -25,7 +25,7 @@ class ExecutorJob(BootJob, CronJob):
         self.failed_count = 0
 
     @property
-    def name(self) -> str:
+    def verbose_name(self) -> str:
         return "Detect commands and execute"
 
     @property

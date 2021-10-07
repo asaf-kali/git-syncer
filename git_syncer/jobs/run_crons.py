@@ -14,7 +14,7 @@ CRON_JOBS: List[CronJob] = []
 def run_crons():
     jobs_to_run = _get_jobs_to_run()
     # First checking and then running because things might take longer then 1 minute.
-    _run_jobs(jobs_to_run)
+    _run_jobs(jobs_to_run=jobs_to_run)
 
 
 def _get_jobs_to_run() -> List[CronJob]:

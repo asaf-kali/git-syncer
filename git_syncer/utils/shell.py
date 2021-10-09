@@ -46,8 +46,9 @@ def execute_shell(
     _pass_output(origin=process.stderr, output_redirect=output_redirect, print_output=print_output)
     exit_code = process.wait()
     if print_output:
-        execution_log.info(f"{SEPARATOR}")  # End of command output{SEPARATOR}
-        log.debug(f"Command exit code: {exit_code}")
+        # execution_log.info(f"{SEPARATOR}")  # End of command output{SEPARATOR}
+        if exit_code != 0:
+            log.debug(f"Command exit code: {exit_code}")
     return exit_code
 
 

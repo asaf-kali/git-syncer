@@ -4,6 +4,7 @@ Allows cron job control and command execution on a remote machine using git infr
 
 [![Tests](https://github.com/asaf-kali/git-syncer/actions/workflows/tests.yml/badge.svg)](https://github.com/asaf-kali/git-syncer/actions/workflows/tests.yml)
 [![Lint](https://github.com/asaf-kali/git-syncer/actions/workflows/lint.yml/badge.svg)](https://github.com/asaf-kali/git-syncer/actions/workflows/lint.yml)
+[![PyPI version](https://badge.fury.io/py/git-syncer.svg)](https://badge.fury.io/py/git-syncer)
 
 👷🏻 *Please note, this project is still a work-in-progress* 🏗️
 

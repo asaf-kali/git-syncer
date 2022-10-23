@@ -2,17 +2,17 @@ import logging
 import os
 from typing import List, Set
 
-from git_syncer.models import Command, CronJob
+from git_syncer.models import CronJob, Runnable
 from git_syncer.utils import execute_shell
 from git_syncer.utils.logger import wrap
 
 log = logging.getLogger(__name__)
 
 EXECUTE_DIR = "execute"
-COMMANDS: List[Command] = []
+COMMANDS: List[Runnable] = []
 
 
-def add_commands(*commands: Command):
+def add_commands(*commands: Runnable):
     COMMANDS.extend(commands)
 
 
@@ -71,9 +71,9 @@ class ExecutorJob(CronJob):
                 else:
                     self.failed_count += 1
 
-    def _run_command(self, command: Command) -> bool:
+    def _run_command(self, command: Runnable) -> bool:
         log.debug(f"Running command {wrap(command.verbose_name)}.")
-        original_command_file_name = os.path.join(self.commands_dir, command.file_name)
+        original_command_file_name = os.path.join(self.commands_dir, command.command_file_name)
         result_file_name = original_command_file_name + "-result.txt"
         succeeded = True
         try:

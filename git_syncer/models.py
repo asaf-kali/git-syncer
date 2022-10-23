@@ -9,20 +9,18 @@ class Runnable(ABC):
     def verbose_name(self) -> str:
         raise NotImplementedError()
 
-    def run(self) -> str:
-        raise NotImplementedError
-
-
-class Command(Runnable, ABC):
     @property
-    def file_name(self) -> str:
+    def command_file_name(self) -> str:
         return _camel_to_dash_case(self.__class__.__name__)
 
     def should_execute(self, inputs: Set[str]) -> bool:
         for i in inputs:
-            if self.file_name in i and "result" not in i:
+            if self.command_file_name in i and "result" not in i:
                 return True
         return False
+
+    def run(self) -> str:
+        raise NotImplementedError
 
 
 @dataclass

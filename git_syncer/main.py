@@ -4,9 +4,9 @@ from argparse import ArgumentParser, Namespace
 from enum import Enum
 from typing import List
 
-from git_syncer.executor import ExecutorJob
-from git_syncer.run_boot import run_boot, add_boot_jobs
-from git_syncer.run_crons import run_crons, add_cron_jobs
+from .executor import ExecutorJob
+from .run_boot import add_boot_jobs, run_boot
+from .run_crons import add_cron_jobs, run_crons
 from .utils import execute_shell
 
 log = logging.getLogger(__name__)

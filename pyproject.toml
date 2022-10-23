@@ -5,5 +5,12 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+skip = ["__init__.py"]
+
 [tool.mypy]
 ignore_missing_imports = true

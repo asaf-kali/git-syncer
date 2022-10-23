@@ -10,11 +10,13 @@ install:
 # Linting
 
 lint:
-	black . -l $(LINE_LENGTH)
+	black .
+	isort .
 	@make check-lint --no-print-directory
 
 check-lint:
-	black . -l $(LINE_LENGTH) --check
+	black . --check
+	isort . --check
 	flake8 . --max-line-length=$(LINE_LENGTH) --exclude __init__.py
 	mypy .
 

@@ -2,7 +2,6 @@ import logging
 import subprocess
 from io import StringIO
 from typing import Iterable, Optional
-
 from typing.io import IO
 
 log = logging.getLogger(__name__)

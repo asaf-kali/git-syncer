@@ -2,10 +2,9 @@ import logging
 import os
 from typing import List, Set
 
-from . import Command
-from ..jobs import BootJob, CronJob
-from ..utils import execute_shell
-from ..utils.logger import wrap
+from git_syncer.models import Command, CronJob
+from git_syncer.utils import execute_shell
+from git_syncer.utils.logger import wrap
 
 log = logging.getLogger(__name__)
 
@@ -17,7 +16,7 @@ def add_commands(*commands: Command):
     COMMANDS.extend(commands)
 
 
-class ExecutorJob(BootJob, CronJob):
+class ExecutorJob(CronJob):
     def __init__(self, base_dir: str):
         super().__init__()
         self.base_dir = base_dir
@@ -59,8 +58,9 @@ class ExecutorJob(BootJob, CronJob):
             log.debug("No commands directory, returning")
             return set()
         inputs = set(os.listdir(self.commands_dir))
-        log.debug(f"Existing files: {inputs}")
-        return inputs
+        no_results = {i for i in inputs if "result" not in i}
+        log.debug(f"Existing files: {inputs}, no results: {no_results}")
+        return no_results
 
     def _run_commands(self, inputs: Set[str]):
         log.debug(f"Checking {wrap(len(COMMANDS))} commands.")
@@ -73,11 +73,11 @@ class ExecutorJob(BootJob, CronJob):
 
     def _run_command(self, command: Command) -> bool:
         log.debug(f"Running command {wrap(command.verbose_name)}.")
-        original_command_file_name = os.path.join(self.commands_dir, command.formal_name)
+        original_command_file_name = os.path.join(self.commands_dir, command.file_name)
         result_file_name = original_command_file_name + "-result.txt"
         succeeded = True
         try:
-            result = command.execute()
+            result = command.run()
         except Exception as e:
             succeeded = False
             log.exception("Command execution failed")

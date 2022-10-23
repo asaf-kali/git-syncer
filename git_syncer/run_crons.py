@@ -3,8 +3,8 @@ from typing import List
 
 import pycron
 
-from .models import CronJob
-from ..utils.logger import wrap
+from git_syncer.models import CronJob
+from git_syncer.utils.logger import wrap
 
 log = logging.getLogger(__name__)
 

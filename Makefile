@@ -16,7 +16,7 @@ lint:
 check-lint:
 	black . -l $(LINE_LENGTH) --check
 	flake8 . --max-line-length=$(LINE_LENGTH) --exclude __init__.py
-	mypy . --ignore-missing-imports
+	mypy .
 
 # Test
 

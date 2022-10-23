@@ -4,21 +4,21 @@ from argparse import ArgumentParser, Namespace
 from enum import Enum
 from typing import List
 
-from .executor.job import ExecutorJob
-from .jobs.run_boot import run_boot, add_boot_jobs
-from .jobs.run_crons import run_crons, add_cron_jobs
+from git_syncer.executor import ExecutorJob
+from git_syncer.run_boot import run_boot, add_boot_jobs
+from git_syncer.run_crons import run_crons, add_cron_jobs
 from .utils import execute_shell
 
 log = logging.getLogger(__name__)
 
 
-class Mode(Enum):
+class Mode(str, Enum):
     BOOT = "boot"
     CRONS = "crons"
 
     @classmethod
     def value_list(cls) -> List[str]:
-        return [c.value for c in cls]
+        return [c for c in cls]
 
 
 def run():

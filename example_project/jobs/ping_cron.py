@@ -20,7 +20,8 @@ class Ping(CronJob):
 
     @property
     def expression(self) -> str:
-        return "* * * * *"  # Every minute
+        # Every 5 minutes
+        return "*/5 * * * *"
 
     def run(self) -> str:
         return _ping()

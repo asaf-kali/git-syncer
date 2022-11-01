@@ -1,2 +1,2 @@
-git-syncer~=0.2
-requests~=2.28
+git-syncer
+requests

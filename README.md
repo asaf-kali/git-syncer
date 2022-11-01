@@ -24,7 +24,7 @@ On your computer, set up the basic repository
 from git_syncer import run
 from git_syncer.runnables import register
 
-register()  # Add boot jobs, cron jobs, and general runnables here 🏋🏻‍♂️
+register()  # Add boot jobs, cron jobs, and remote commands here 🏋🏻‍♂️
 
 if __name__ == "__main__":
     run()
@@ -48,29 +48,121 @@ On your remote machine (SSH to it):
 11. ⚠️ **THIS STEP WILL OVERRIDE YOUR EXISTING CRONTAB SETTINGS!** ⚠️<br>
     Activate the syncer using the CLI command `init-syncer`.
 
-From now on, you can add new [cron jobs](#cron-jobs) and run [remote commands](#remote-commands) on the machine using
-this git repository. For more details, see the [usage section](#usage).
+From now on, you can add new [cron jobs](#cron-jobs) and execute [remote commands](#remote-commands) on the
+remote machine using this git repository. For more details, see the [usage section](#usage).
 
 <h2 id="usage">
 Usage
 </h2>
 
-This tool writes logs to `~/logs/git-syncer/`.
+Note: this tool writes logs to `~/logs/git-syncer/`.
 
-<h4 id="boot-jobs">
+<h4 id="runnables">
+Runnables
+</h4>
+
+A `Runnable` is the basic class that the package uses.
+To define your own custom commands, create your own class, inherit `Runnable`,
+and implement the mandatory abstract methods:
+```python3
+# File: my_runnables.py
+from git_syncer.models import Runnable
+
+
+class HelloWorld(Runnable):
+    @property
+    def verbose_name(self) -> str:
+        return "Hello World"
+
+    def run(self) -> str:
+        return "This runnable was called!"
+```
+...and register your runnable in `main.py`:
+```python3
+# File: main.py
+from git_syncer.runnables import register
+
+from my_runnables import HelloWorld
+
+register(HelloWorld())
+```
+
+<h3 id="boot-jobs">
 Boot jobs
-</h4>
+</h3>
 
-👷🏻 TODO
+Boot jobs will execute once the remote machine turns on.
+In order to make a `Runnable` into a boot job, set the `run_on_boot` property to `True`:
+```python3
+class HelloWorld(Runnable):
+    @property
+    def run_on_boot(self) -> bool:
+        return True
+    ...
+```
 
-<h4 id="cron-jobs">
+<h3 id="cron-jobs">
 Cron jobs
-</h4>
+</h3>
 
-👷🏻 TODO
+To create a cron job, inherit the `CronJob` class, and fill the `expression` property:
+```python3
+from git_syncer.models import CronJob
 
-<h4 id="remote-commands">
-Remote commands
-</h4>
+class MyCronJob(CronJob):
+    @property
+    def verbose_name(self) -> str:
+        return "Ping"
+
+    @property
+    def expression(self) -> str:
+        # Every 5 minutes
+        return "*/5 * * * *"
+
+    def run(self) -> str:
+        return "This job runs every 5 minutes"
+```
+
+<h3 id="remote-commands">
+Execute jobs on command
+</h3>
+
+In order to make a non-cron runnable execute on the remote machine:
+
+1. On your local machine, commit an empty file matching your `Runnable` name under `execute` folder (for example,
+   if the runnable class name is `GetIP`, commit a file named `execute/get-ip`).
+2. Push your changes.
+3. On the next round minute:
+   1. The runnable will execute on the remote device,
+   2. The execution result will be written in a file matching your runnable name (for example, if the runnable
+      class name is `GetIP`, the result file will be named `execute/get-ip-result.txt`, and the `execute/get-ip`
+      file will be removed).
+   3. The changes will be committed and pushed back to the repository.
+4. Wait a few seconds and pull your repository. You will see the execution result in the expected result file.
+
+Expert mode: every minute, in order the check if a non-cron `Runnable` should be executed, its `should_execute` method
+is called (matching file names to the runnable class name). In order to execute your runnable based on different logic,
+override the `should_execute` method:
+```python3
+from typing import Set
+from git_syncer.models import Runnable
+import random
+
+class HelloWorld(Runnable):
+    @property
+    def verbose_name(self) -> str:
+        return "Hello World"
+
+    def run(self) -> str:
+        return "This runnable was called!"
+
+     def should_execute(self, inputs: Set[str]) -> bool:
+        # Take a look at the base method and implement your own logic.
+        return random.randint(1, 100) % 5 == 0
+```
+
+<h3 id="error-handling">
+Error handling
+</h3>
 
 👷🏻 TODO

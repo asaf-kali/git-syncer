@@ -20,14 +20,14 @@ repos:
         entry: "make check-isort"
         language: system
         pass_filenames: false
-      - id: check-mypy
-        name: check mypy typing
-        entry: "make check-mypy"
-        language: system
-        pass_filenames: false
       - id: check-flake8
         name: check flake8 standard
         entry: "make check-flake8"
+        language: system
+        pass_filenames: false
+      - id: check-mypy
+        name: check mypy typing
+        entry: "make check-mypy"
         language: system
         pass_filenames: false
       - id: check-pylint

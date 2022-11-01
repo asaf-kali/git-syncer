@@ -40,11 +40,12 @@ check-isort:
 check-flake8:
 	flake8 .
 
+check-mypy:
+	mypy .
+
 check-pylint:
 	pylint git_syncer/ --fail-under=9
 
-check-mypy:
-	mypy git_syncer/
 
 lint: format
 	pre-commit run --all-files

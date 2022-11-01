@@ -4,11 +4,10 @@ from typing import List
 import pycron
 
 from git_syncer.models import CronJob
+from git_syncer.runnables import get_cron_jobs
 from git_syncer.utils.logger import wrap
 
 log = logging.getLogger(__name__)
-
-CRON_JOBS: List[CronJob] = []
 
 
 def run_crons():
@@ -18,9 +17,10 @@ def run_crons():
 
 
 def _get_jobs_to_run() -> List[CronJob]:
-    log.info(f"Checking {wrap(len(CRON_JOBS))} cron jobs.")
+    cron_jobs = get_cron_jobs()
+    log.info(f"Checking {wrap(len(cron_jobs))} cron jobs.")
     jobs_to_run = []
-    for job in CRON_JOBS:
+    for job in cron_jobs:
         if pycron.is_now(job.expression):
             jobs_to_run.append(job)
             log.debug(f"Cron {wrap(job.verbose_name)} will run.")
@@ -29,14 +29,9 @@ def _get_jobs_to_run() -> List[CronJob]:
 
 def _run_jobs(jobs_to_run: List[CronJob]):
     log.debug(f"Total {wrap(len(jobs_to_run))} crons will run.")
-    # TODO: Maybe run async in parallel? # pylint: disable=fixme
     for job in jobs_to_run:
         try:
             log.debug(f"Running cron {wrap(job.verbose_name)}")
             job.run()
         except:  # noqa # pylint: disable=bare-except
             log.exception(f"Job {wrap(job.verbose_name)} execution failed")
-
-
-def add_cron_jobs(*jobs: CronJob):
-    CRON_JOBS.extend(jobs)

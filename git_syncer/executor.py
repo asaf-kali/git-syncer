@@ -1,19 +1,15 @@
 import logging
 import os
-from typing import List, Set
+from typing import Set
 
 from git_syncer.models import CronJob, Runnable
+from git_syncer.runnables import get_all_jobs
 from git_syncer.utils import execute_shell
 from git_syncer.utils.logger import wrap
 
 log = logging.getLogger(__name__)
 
 EXECUTE_DIR = "execute"
-COMMANDS: List[Runnable] = []
-
-
-def add_commands(*commands: Runnable):
-    COMMANDS.extend(commands)
 
 
 class ExecutorJob(CronJob):
@@ -63,8 +59,9 @@ class ExecutorJob(CronJob):
         return no_results
 
     def _run_commands(self, inputs: Set[str]):
-        log.debug(f"Checking {wrap(len(COMMANDS))} commands.")
-        for command in COMMANDS:
+        all_jobs = get_all_jobs()
+        log.debug(f"Checking {wrap(len(all_jobs))} commands.")
+        for command in all_jobs:
             if command.should_execute(inputs=inputs):
                 if self._run_command(command):
                     self.succeeded_count += 1

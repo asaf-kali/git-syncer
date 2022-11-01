@@ -5,8 +5,9 @@ from enum import Enum
 from typing import List
 
 from .executor import ExecutorJob
-from .run_boot import add_boot_jobs, run_boot
-from .run_crons import add_cron_jobs, run_crons
+from .run_boot import run_boot
+from .run_crons import run_crons
+from .runnables import register
 from .utils import execute_shell
 
 log = logging.getLogger(__name__)
@@ -68,5 +69,4 @@ def _run_sync():
 def _add_execute_job():
     cwd = os.getcwd()
     execute_job = ExecutorJob(cwd)
-    add_boot_jobs(execute_job)
-    add_cron_jobs(execute_job)
+    register(execute_job)

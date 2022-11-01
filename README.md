@@ -13,21 +13,18 @@ infrastructure.
 Quick start
 </h2>
 
-On your computer, set up the basic repository:
+On your computer, set up the basic repository
+(checkout the `example_project` in this repository to see how this should generally look):
 
 1. [Create](https://github.com/new) a **private** GitHub repository and clone it.
-2. Create a `requirements.txt` file, and add the `git-syncer~=0.2` dependency.
+2. Create a `requirements.txt` file, and add the `git-syncer` dependency.
 3. Create a `main.py` file:
 
 ```python3
 from git_syncer import run
-from git_syncer.executor import add_commands
-from git_syncer.run_boot import add_boot_jobs
-from git_syncer.run_crons import add_cron_jobs
+from git_syncer.runnables import register
 
-add_boot_jobs()  # Add boot jobs here ⛷️
-add_cron_jobs()  # Add cron jobs here 🚵🏻‍♀️
-add_commands()  # Add remote commands here 🏋🏻‍♂️
+register()  # Add boot jobs, cron jobs, and general runnables here 🏋🏻‍♂️
 
 if __name__ == "__main__":
     run()

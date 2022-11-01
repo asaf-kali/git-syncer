@@ -13,6 +13,10 @@ class Runnable(ABC):
     def command_file_name(self) -> str:
         return _camel_to_dash_case(self.__class__.__name__)
 
+    @property
+    def run_on_boot(self) -> bool:
+        return False
+
     def should_execute(self, inputs: Set[str]) -> bool:
         for i in inputs:
             if self.command_file_name in i and "result" not in i:

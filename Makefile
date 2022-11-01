@@ -1,3 +1,5 @@
+.PHONY: build
+
 LINE_LENGTH=120
 
 # Install

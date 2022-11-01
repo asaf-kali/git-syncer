@@ -2,7 +2,7 @@ import logging
 import subprocess
 from io import StringIO
 from typing import Iterable, Optional
-from typing.io import IO
+from typing.io import IO  # pylint: disable=import-error
 
 log = logging.getLogger(__name__)
 execution_log = log.getChild("execution")
@@ -40,7 +40,12 @@ def execute_shell(
         full_command += " " + " ".join(args)
     if print_command:
         log.debug(f"Executing shell: '{full_command}'")
-    process = subprocess.Popen(args=full_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    process = subprocess.Popen(  # pylint: disable=consider-using-with
+        args=full_command,
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
     _pass_output(origin=process.stdout, output_redirect=output_redirect, print_output=print_output)
     _pass_output(origin=process.stderr, output_redirect=output_redirect, print_output=print_output)
     exit_code = process.wait()

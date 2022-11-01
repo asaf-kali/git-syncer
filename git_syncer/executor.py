@@ -78,11 +78,11 @@ class ExecutorJob(CronJob):
         succeeded = True
         try:
             result = command.run()
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except,invalid-name
             succeeded = False
             log.exception("Command execution failed")
             result = str(e)
-        with open(result_file_name, "w") as result_file:
+        with open(result_file_name, "w") as result_file:  # pylint: disable=unspecified-encoding
             log.info(f"Writing result: {result}")
             result_file.write(result)
         os.remove(original_command_file_name)

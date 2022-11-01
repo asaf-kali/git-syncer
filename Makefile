@@ -1,29 +1,53 @@
 LINE_LENGTH=120
 
-# Setup
+# Install
 
-install:
-	@echo "Installing dependencies..."
+install-run:
 	pip install --upgrade pip
-	pip install -r requirements.txt -r requirements-dev.txt
+	pip install -r requirements.txt
 
-# Linting
+install-test:
+	pip install -r requirements-test.txt
+	@make install-run --no-print-directory
 
-lint:
-	black .
-	isort .
-	@make check-lint --no-print-directory
+install-dev:
+	pip install -r requirements-dev.txt
+	pip install -r requirements-lint.txt
+	@make install-test --no-print-directory
+	#sudo apt-get install gettext
+	pre-commit install
 
-check-lint:
-	black . --check
-	isort . --check
-	flake8 . --max-line-length=$(LINE_LENGTH) --exclude __init__.py
-	mypy .
+install: install-dev
+	@make test --no-print-directory
+	@make lint --no-print-directory
 
 # Test
-
 test:
 	echo "TODO"
+
+# Lint
+
+format:
+	black .
+	isort .
+
+check-black:
+	black --check .
+
+check-isort:
+	isort --check .
+
+check-flake8:
+	flake8 .
+
+check-pylint:
+	pylint git_syncer/ --fail-under=9
+
+check-mypy:
+	mypy git_syncer/
+
+lint: format
+	pre-commit run --all-files
 
 # Pypi
 

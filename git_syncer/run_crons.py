@@ -29,12 +29,12 @@ def _get_jobs_to_run() -> List[CronJob]:
 
 def _run_jobs(jobs_to_run: List[CronJob]):
     log.debug(f"Total {wrap(len(jobs_to_run))} crons will run.")
-    # TODO: Maybe run async in parallel?
+    # TODO: Maybe run async in parallel? # pylint: disable=fixme
     for job in jobs_to_run:
         try:
             log.debug(f"Running cron {wrap(job.verbose_name)}")
             job.run()
-        except:  # noqa
+        except:  # noqa # pylint: disable=bare-except
             log.exception(f"Job {wrap(job.verbose_name)} execution failed")
 
 

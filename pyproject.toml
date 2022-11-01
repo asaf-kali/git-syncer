@@ -5,12 +5,39 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
+# Testing
+
+[tool.pytest.ini_options]
+addopts = "-s --disable-pytest-warnings"
+DJANGO_SETTINGS_MODULE = "commiz.settings"
+
+[tool.coverage.run]
+source = ["api"]
+
+# Linting
+
 [tool.black]
 line-length = 120
 
 [tool.isort]
 profile = "black"
-skip = ["__init__.py"]
+skip = ["__init__.py", ".deployment/"]
+
+[tool.flake8]
+max-line-length = 120
+ignore = ["E203", "W503", "E402"]
+exclude = ["local", ".deployment/"]
+
+[tool.pylint]
+max-line-length = 120
+disable = [
+    "C0114",
+    "C0115",
+    "C0116",
+    "R0903",
+    "W1203", # Fix
+]
 
 [tool.mypy]
 ignore_missing_imports = true
+exclude = ["local/", ".deployment/"]

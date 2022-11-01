@@ -15,7 +15,7 @@ def run_boot():
         log.debug(f"Running job {wrap(job.verbose_name)}")
         try:
             job.run()
-        except:  # noqa
+        except:  # noqa pylint: disable=bare-except
             log.exception("Job execution failed")
 
 

@@ -15,8 +15,7 @@ jobs:
           python-version: 3.9
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
-          pip install -r requirements-dev.txt
+          make install-test
       - name: Run tests
         run: |
           make test

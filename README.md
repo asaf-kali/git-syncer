@@ -25,7 +25,7 @@ from git_syncer.executor import add_commands
 from git_syncer.run_boot import add_boot_jobs
 from git_syncer.run_crons import add_cron_jobs
 
-add_boot_jobs()  # Add boot jobs here ⛷️ 
+add_boot_jobs()  # Add boot jobs here ⛷️
 add_cron_jobs()  # Add cron jobs here 🚵🏻‍♀️
 add_commands()  # Add remote commands here 🏋🏻‍♂️
 

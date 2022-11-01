@@ -1,0 +1,7 @@
+# Linting
+black==22.10.0
+mypy==0.982
+flake8==5.0.4
+flake8-pyproject==1.1.0.post0
+isort==5.10.1
+pylint==2.15.5

@@ -18,7 +18,7 @@ class Mode(str, Enum):
 
     @classmethod
     def value_list(cls) -> List[str]:
-        return [c for c in cls]
+        return list(cls)
 
 
 def run():

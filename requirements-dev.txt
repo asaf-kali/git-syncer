@@ -1,8 +1,6 @@
-black==21.9b0
-isort==5.10.1
-flake8==3.9.2
-mypy==0.910
-
 # Package
-build~=0.7
-twine~=3.8
+build==0.9.0
+twine==4.0.1
+
+# Wofkflow
+pre-commit==2.20.0

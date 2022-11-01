@@ -72,5 +72,5 @@ def configure_logging():
     log.debug("Logging configured")
 
 
-def wrap(o: object) -> str:
+def wrap(o: object) -> str:  # pylint: disable=invalid-name
     return f"[{o}]"

@@ -34,6 +34,7 @@ def execute_shell(
     print_command: bool = True,
     print_output: bool = True,
     output_redirect: Optional[StringIO] = None,
+    raise_on_failure: bool = False,
 ) -> int:
     full_command = command
     if args:
@@ -53,6 +54,8 @@ def execute_shell(
         # execution_log.info(f"{SEPARATOR}")  # End of command output{SEPARATOR}
         if exit_code != 0:
             log.debug(f"Command exit code: {exit_code}")
+    if exit_code != 0 and raise_on_failure:
+        raise subprocess.CalledProcessError(returncode=exit_code, cmd=full_command)
     return exit_code
 
 

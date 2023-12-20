@@ -61,6 +61,8 @@ build:
 upload:
 	twine upload dist/*
 
+build-and-upload: build upload
+
 upload-test:
 	twine upload --repository testpypi dist/*
 
